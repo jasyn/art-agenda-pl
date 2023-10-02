@@ -7,6 +7,7 @@ import { cloudStorage } from '@payloadcms/plugin-cloud-storage';
 import { s3Adapter } from '@payloadcms/plugin-cloud-storage/s3';
 import { Media } from './collections/Media';
 import seo from '@payloadcms/plugin-seo';
+import Actors from './collections/Actors';
 
 const adapter = s3Adapter({
   config: {
@@ -23,6 +24,7 @@ const adapter = s3Adapter({
 
 export default buildConfig({
   collections: [
+    Actors,
     Pages,
     Users,
     Media,
