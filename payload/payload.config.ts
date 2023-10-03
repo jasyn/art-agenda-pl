@@ -46,6 +46,13 @@ export default buildConfig({
       ]
     }
   ],
+  localization: {
+      locales: [
+        'pl',
+      ],
+      defaultLocale: 'pl',
+      fallback: true
+  },
   globals: [
     MainMenu,
   ],

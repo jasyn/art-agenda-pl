@@ -1,4 +1,5 @@
-import { CollectionConfig } from 'payload/types';
+import { CollectionConfig, Validate } from 'payload/types';
+import { validateNrDowodu, validateNrKonta, validatePesel, validateUrl } from '../components/forms/validation';
 
 const Actors: CollectionConfig = {
   slug: 'aktorzy',
@@ -14,6 +15,7 @@ const Actors: CollectionConfig = {
       name: 'kategoria',
       label: 'Kategoria',
       type: 'select',
+      required: true,
       options: [
         {
           label: 'Aktorzy',
@@ -46,12 +48,14 @@ const Actors: CollectionConfig = {
       label: 'Pesel',
       type: 'number',
       required: true,
+      validate: validatePesel
     },        
     {
       name: 'nrDowodu',
       label: 'Numer Dowodu',
       type: 'text',
       required: true,
+      validate: validateNrDowodu
     },
     {
       name: 'daneBankowe',
@@ -69,6 +73,7 @@ const Actors: CollectionConfig = {
           label: 'Numer konta',
           type: 'number',
           required: true,
+          validate: validateNrKonta
         }
       ]
     },
@@ -85,7 +90,13 @@ const Actors: CollectionConfig = {
           name: 'dataUrodzenia',
           label: 'Data Urodzenia',
           type: 'date',
+          localized: true,
           required: true,
+          admin: {
+            date: {
+              displayFormat: 'dd.MM.yyyy',
+            }
+          }
         },
         {
           name: 'miejsceUrodzenia',
@@ -187,7 +198,7 @@ const Actors: CollectionConfig = {
           admin: {
             date: {
               pickerAppearance: 'monthOnly',
-              // displayFormat: 'yyyy'
+              displayFormat: 'yyyy'
             },
             condition: (_, siblingData) => siblingData.szkola
           }
@@ -199,7 +210,7 @@ const Actors: CollectionConfig = {
           admin: {
             date: {
               pickerAppearance: 'monthOnly',
-              // displayFormat: 'yyyy'
+              displayFormat: 'yyyy'
             },
             condition: (_, siblingData) => siblingData.szkola
           }
@@ -462,44 +473,28 @@ const Actors: CollectionConfig = {
       ]
     },
     {
-      name: 'umiejetnosci',
-      label: 'Umiejętności',
-      type: 'text',
-    },
-    {
-      name: 'nagrody',
-      label: 'Nagrody',
-      type: 'text',
-    },
-    {
-      name: 'filmografia',
-      type: 'array',
+      name: 'inneUmietnosci',
+      label: 'Inne Umiętności',
+      type: 'group',
       fields: [
         {
-          name: 'film',
-          type: 'group',
+          name: 'inneUmietnosci',
+          label: 'Inne Umiętności',
+          type: 'checkbox',
+        },
+        {
+          name: 'inneUmietnosci',
+          label: 'Inne Umiętności',
+          type: 'array',
+          admin: {
+            condition: (_, siblingData) => siblingData.inneUmietnosci
+          },
           fields: [
             {
-              name: 'rok',
-              label: 'Rok',
-              type: 'date',
-              admin: {
-                date: {
-                  pickerAppearance: 'monthOnly',
-                  // displayFormat: 'yyyy'
-                }
-              }
+              name: 'umiejetnosc',
+              label: 'Umiejętność',
+              type: 'text'
             },
-            {
-              name: 'tytul',
-              label: 'Tytuł',
-              type: 'text',
-            },
-            {
-              name: 'najwazniejszeRoly',
-              label: 'Najważniejsze Roly',
-              type: 'text',
-            }
           ]
         }
       ]
@@ -507,27 +502,132 @@ const Actors: CollectionConfig = {
     {
       name: 'nagrody',
       label: 'Nagrody',
-      type: 'text',
+      type: 'group',
+      fields: [
+        {
+          name: 'nagrody',
+          label: 'Nagrody',
+          type: 'checkbox',
+        },
+        {
+          name: 'nagrody',
+          label: 'Nagrody',
+          type: 'array',
+          admin: {
+            condition: (_, siblingData) => siblingData.nagrody
+          },
+          fields: [
+            {
+              type: 'row',
+              fields: [
+                {
+                  name: 'nagroda',
+                  label: 'Nagroda',
+                  type: 'text',
+                  admin: {
+                    width: '80%',
+                  }
+                },
+                {
+                  name: 'rokNagrody',
+                  label: 'Rok',
+                  type: 'date',
+                  admin: {
+                    width: '20%',
+                    date: {
+                      pickerAppearance: 'monthOnly',
+                      displayFormat: 'yyyy'
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      name: 'filmografia',
+      label: 'Filmografia',
+      type: 'group',
+      fields: [
+        {
+          name: 'filmografia',
+          label: 'Filmografia',
+          type: 'checkbox',
+        },
+        {
+          name: 'filmografia',
+          label: 'Filmografia',
+          type: 'array',
+          admin: {
+            condition: (_, siblingData) => siblingData.filmografia
+          },
+          fields: [
+            {
+              type: 'row',
+              fields: [
+                {
+                  name: 'tytul',
+                  label: 'Tytuł',
+                  type: 'text',
+                  admin: {
+                    width: '80%',
+                  }
+                },
+                {
+                  name: 'rok',
+                  label: 'Rok',
+                  type: 'date',
+                  admin: {
+                    width: '20%',
+                    date: {
+                      pickerAppearance: 'monthOnly',
+                      displayFormat: 'yyyy'
+                    }
+                  }
+                }
+              ],
+            },
+            {
+              name: 'najwazniejszeRoly',
+              label: 'Najważniejsze Roly',
+              type: 'array',
+              fields: [
+                {
+                  name: 'rola',
+                  label: 'Rola',
+                  type: 'text'
+                }
+              ]
+            }
+          ]
+        }
+      ]
     },
     {
       name: 'filmpolski',
       label: 'Filmpolski',
       type: 'text',
+      validate: validateUrl
     },
     {
       name: 'youtube',
       label: 'Youtube',
       type: 'text',
+      validate: validateUrl
     },
     {
       name: 'instagram',
       label: 'Instagram',
       type: 'text',
+      validate: validateUrl
     },
     {
       name: 'www',
       label: 'WWWW',
       type: 'text',
+      validate: validateUrl
     },
   ]
 };
