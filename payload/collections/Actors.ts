@@ -38,7 +38,7 @@ const Actors: CollectionConfig = {
     {
       name: 'nazwisko',
       label: 'Nazwisko',
-      type: 'number',
+      type: 'text',
       required: true,
     },
     {
@@ -48,13 +48,13 @@ const Actors: CollectionConfig = {
       required: true,
     },        
     {
-      name: 'nr-dowodu',
+      name: 'nrDowodu',
       label: 'Numer Dowodu',
       type: 'text',
       required: true,
     },
     {
-      name: 'dane-bankowe',
+      name: 'daneBankowe',
       label: 'Dane Bankowe',
       type: 'group',
       fields:[
@@ -65,7 +65,7 @@ const Actors: CollectionConfig = {
           required: true,
         },
         {
-          name: 'numer-konta',
+          name: 'numerKonta',
           label: 'Numer konta',
           type: 'number',
           required: true,
@@ -73,7 +73,7 @@ const Actors: CollectionConfig = {
       ]
     },
     {
-      name: 'imiona-rodzicow',
+      name: 'imionaRodzicow',
       label: 'Imiona Rodziców',
       type: 'text',
       required: true,
@@ -82,13 +82,13 @@ const Actors: CollectionConfig = {
       type: 'row',
       fields: [
         {
-          name: 'data-urodzenia',
+          name: 'dataUrodzenia',
           label: 'Data Urodzenia',
           type: 'date',
           required: true,
         },
         {
-          name: 'miejsce-urodzenia',
+          name: 'miejsceUrodzenia',
           label: 'Miejsce Urodzenia',
           type: 'text',
           required: true,
@@ -122,7 +122,7 @@ const Actors: CollectionConfig = {
               }
             },
             {
-              name: 'nr-mieszkania',
+              name: 'nrMieszkania',
               label: 'Numer Mieszkania',
               type: 'text',
               admin: {
@@ -135,7 +135,7 @@ const Actors: CollectionConfig = {
           type: 'row',
           fields: [
             {
-              name: 'kod-pocztowy',
+              name: 'kodPocztowy',
               label: 'Kod Pocztowy',
               type: 'text',
               required: true,
@@ -157,7 +157,7 @@ const Actors: CollectionConfig = {
       ]
     },
     {
-      name: 'urzad-skrabowy',
+      name: 'urzadSkrabowy',
       label: 'Właściwy Urząd Skrabowy',
       type: 'number',
       required: true,
@@ -173,7 +173,7 @@ const Actors: CollectionConfig = {
           type: 'checkbox',
         },
         {
-          name: 'nazwa-szkoly',
+          name: 'nazwaSzkoly',
           label: 'Nazwa Szkoły',
           type: 'text',
           admin: {
@@ -184,16 +184,23 @@ const Actors: CollectionConfig = {
           name: 'rok',
           label: 'Rok',
           type: 'date',
-          // TODO: check formatting
           admin: {
+            date: {
+              pickerAppearance: 'monthOnly',
+              // displayFormat: 'yyyy'
+            },
             condition: (_, siblingData) => siblingData.szkola
           }
         },
         {
-          name: 'rok-ukonczenia',
+          name: 'rokUkonczenia',
           label: 'Rok Ukonczenia ',
           type: 'date',
           admin: {
+            date: {
+              pickerAppearance: 'monthOnly',
+              // displayFormat: 'yyyy'
+            },
             condition: (_, siblingData) => siblingData.szkola
           }
         }
@@ -220,17 +227,17 @@ const Actors: CollectionConfig = {
       ]
     },
     {
-      name: 'kolor-wlosow',
+      name: 'kolorWlosow',
       label: 'Kolor Włosów',
       type: 'text',
     },
     {
-      name: 'dlugosc-wlosow',
+      name: 'dlugoscWlosow',
       label: 'Długośc Włosów',
       type: 'text',
     },
     {
-      name: 'kolor-oczu',
+      name: 'kolorOczu',
       label: 'Kolor Oczu',
       type: 'text',
     },
@@ -245,7 +252,7 @@ const Actors: CollectionConfig = {
       type: 'number',
     },
     {
-      name: 'klatka-piersiowa',
+      name: 'klatkaPiersiowa',
       label: 'Klatka Piersiowa',
       type: 'number',
     },
@@ -260,22 +267,22 @@ const Actors: CollectionConfig = {
       type: 'number',
     },
     {
-      name: 'numer-buta',
+      name: 'numerButa',
       label: 'Numer Buta',
       type: 'number',
     },
     {
-      name: 'rozmiar-ubran',
+      name: 'rozmiarUbran',
       label: 'Rozmiar Ubrań',
       type: 'number',
     },
     {
-      name: 'rozmiar-garnituru',
+      name: 'rozmiarGarnituru',
       label: 'Rozmiar Garnituru',
       type: 'number',
     },
     {
-      name: 'rozmiar-dzinsow',
+      name: 'rozmiarDzinsow',
       label: 'Rozmiar dżinsów',
       type: 'number',
     },
@@ -284,30 +291,176 @@ const Actors: CollectionConfig = {
       label: 'Prawo Jazdy',
       type: 'checkbox',
     },
-    // {
-    //   name: 'jezyki',
-    //   type: 'relationship',
-    //   relationTo: 'languages'
-    //   // TODO: create languages collection
-    // },
-    // {
-    //   name: 'spiew',
-    //   type: 'relationship',
-    //   relationTo: 'singing'
-    //   // TODO: create languages collection
-    // },
-    // {
-    //   name: 'taniec',
-    //   type: 'relationship',
-    //   relationTo: 'dancing'
-    //   // TODO: create languages collection
-    // },
-    // {
-    //   name: 'instrumenty',
-    //   type: 'relationship',
-    //   relationTo: 'instrument'
-    //   // TODO: create languages collection
-    // },
+    {
+      name: 'jezyki',
+      label: 'Języki',
+      type: 'group',
+      fields: [
+        {
+          name: 'jezykiObcy',
+          label: 'Języki Obcy',
+          type: 'checkbox',
+        },
+        {
+          name: 'jezyki',
+          label: 'Języki',
+          type: 'array',
+          admin: {
+            condition: (_, siblingData) => siblingData.jezykiObcy
+          },
+          fields: [
+            {
+              type: 'row',
+              fields: [
+                {
+                  name: 'language',
+                  label: 'Język',
+                  type: 'relationship',
+                  relationTo: 'jezyki',
+                  admin: {
+                    width: '80%',
+                  }
+                },    
+                {
+                  name: 'poziom',
+                  label: 'Poziom',
+                  type: 'select',
+                  options: [
+                    {
+                      label: 'A1',
+                      value: 'A1'
+                    },
+                    {
+                      label: 'A2',
+                      value: 'A2'
+                    },
+                    {
+                      label: 'B1',
+                      value: 'B1'
+                    },
+                    {
+                      label: 'B2',
+                      value: 'B2'
+                    },
+                    {
+                      label: 'C1',
+                      value: 'C1'
+                    },
+                    {
+                      label: 'C2',
+                      value: 'C2'
+                    },
+                  ],
+                  admin: {
+                    width: '20%',
+                  }
+                }
+              ]
+            },
+          ]
+        }
+
+      ]
+    },
+    {
+      name: 'spiewy',
+      label: 'Śpiewy',
+      type: 'group',
+      fields: [
+        {
+          name: 'spiew',
+          label: 'Śpiew',
+          type: 'checkbox',
+        },
+        {
+          name: 'spiewy',
+          label: 'Śpiewy',
+          type: 'array',
+          admin: {
+            condition: (_, siblingData) => siblingData.spiew
+          },
+          fields: [
+            {
+              type: 'row',
+              fields: [
+                {
+                  name: 'spiew',
+                  label: 'Śpiew',
+                  type: 'relationship',
+                  relationTo: 'spiewy',
+                },
+              ]
+            },
+          ]
+        }
+      ]
+    },
+    {
+      name: 'tancy',
+      label: 'Tańcy',
+      type: 'group',
+      fields: [
+        {
+          name: 'taniec',
+          label: 'Taniec',
+          type: 'checkbox',
+        },
+        {
+          name: 'tancy',
+          label: 'Tańcy',
+          type: 'array',
+          admin: {
+            condition: (_, siblingData) => siblingData.taniec
+          },
+          fields: [
+            {
+              type: 'row',
+              fields: [
+                {
+                  name: 'taniec',
+                  label: 'Taniec',
+                  type: 'relationship',
+                  relationTo: 'tancy',
+                },
+              ]
+            },
+          ]
+        }
+      ]
+    },
+    {
+      name: 'instrumenty',
+      label: 'Instrumenty',
+      type: 'group',
+      fields: [
+        {
+          name: 'instrument',
+          label: 'Instrument',
+          type: 'checkbox',
+        },
+        {
+          name: 'instrumenty',
+          label: 'Instrumenty',
+          type: 'array',
+          admin: {
+            condition: (_, siblingData) => siblingData.instrument
+          },
+          fields: [
+            {
+              type: 'row',
+              fields: [
+                {
+                  name: 'instrument',
+                  label: 'Instrument',
+                  type: 'relationship',
+                  relationTo: 'instrumenty',
+                },
+              ]
+            },
+          ]
+        }
+      ]
+    },
     {
       name: 'umiejetnosci',
       label: 'Umiejętności',
@@ -330,7 +483,12 @@ const Actors: CollectionConfig = {
               name: 'rok',
               label: 'Rok',
               type: 'date',
-              // TODO: check formatting
+              admin: {
+                date: {
+                  pickerAppearance: 'monthOnly',
+                  // displayFormat: 'yyyy'
+                }
+              }
             },
             {
               name: 'tytul',
@@ -338,15 +496,13 @@ const Actors: CollectionConfig = {
               type: 'text',
             },
             {
-              name: 'najwazniejsze roly',
+              name: 'najwazniejszeRoly',
               label: 'Najważniejsze Roly',
               type: 'text',
             }
           ]
         }
       ]
-
-      // TODO: collection maybe?
     },
     {
       name: 'nagrody',

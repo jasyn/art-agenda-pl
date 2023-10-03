@@ -8,6 +8,10 @@ import { s3Adapter } from '@payloadcms/plugin-cloud-storage/s3';
 import { Media } from './collections/Media';
 import seo from '@payloadcms/plugin-seo';
 import Actors from './collections/Actors';
+import Languages from './collections/Languages';
+import SingingSkills from './collections/SingingSkills';
+import DancingSkills from './collections/DancingSkills';
+import Instruments from './collections/Instruments';
 
 const adapter = s3Adapter({
   config: {
@@ -25,6 +29,10 @@ const adapter = s3Adapter({
 export default buildConfig({
   collections: [
     Actors,
+    Languages,
+    SingingSkills,
+    DancingSkills,
+    Instruments,
     Pages,
     Users,
     Media,
