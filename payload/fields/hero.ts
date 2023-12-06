@@ -32,13 +32,13 @@ export const hero: Field = {
     },
     richText({
       admin: {
-        elements: [
-          'h1',
-          largeBody,
-          label,
-          'link',
-        ],
-        leaves: [],
+        // elements: [
+        //   'h1',
+        //   largeBody,
+        //   label,
+        //   'link',
+        // ],
+        // leaves: [],
       }
     }),
     linkGroup({

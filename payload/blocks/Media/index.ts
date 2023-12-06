@@ -34,11 +34,11 @@ export const MediaBlock: Block = {
     {
       name: 'caption',
       type: 'richText',
-      admin: {
-        elements: [
-          'link',
-        ]
-      }
+      // admin: {
+      //   elements: [
+      //     'link',
+      //   ]
+      // }
     }
   ]
 }

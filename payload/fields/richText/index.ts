@@ -1,8 +1,9 @@
-import { RichTextElement, RichTextField, RichTextLeaf } from 'payload/dist/fields/config/types';
+import { RichTextField } from 'payload/dist/fields/config/types';
 import deepMerge from '../../utilities/deepMerge';
 import elements from './elements';
 import leaves from './leaves';
 import link from '../link';
+import { RichTextElement, RichTextLeaf } from '@payloadcms/richtext-slate';
 
 type RichText = (
   overrides?: Partial<RichTextField>,
@@ -78,14 +79,14 @@ const richText: RichText = (
       //     },
       //   },
       // },
-      elements: [
-        ...elements,
-        ...additions.elements || [],
-      ],
-      leaves: [
-        ...leaves,
-        ...additions.leaves || [],
-      ],
+      // elements: [
+      //   ...elements,
+      //   ...additions.elements || [],
+      // ],
+      // leaves: [
+      //   ...leaves,
+      //   ...additions.leaves || [],
+      // ],
     },
   },
   overrides || {},

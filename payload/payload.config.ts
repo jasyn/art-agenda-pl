@@ -13,6 +13,7 @@ import Languages from './collections/Languages';
 import SingingSkills from './collections/SingingSkills';
 import DancingSkills from './collections/DancingSkills';
 import Instruments from './collections/Instruments';
+import { slateEditor } from '@payloadcms/richtext-slate';
 
 const adapter = s3Adapter({
   config: {
@@ -47,6 +48,7 @@ export default buildConfig({
       ]
     }
   ],
+  editor: slateEditor({}),
   db: mongooseAdapter({
     url: process.env.MONGODB_URI as string
   }),
