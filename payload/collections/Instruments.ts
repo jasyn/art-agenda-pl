@@ -6,6 +6,9 @@ const Instruments: CollectionConfig = {
     singular: 'Instrument',
     plural: 'Instrumenty',
   },
+  admin: {
+    useAsTitle: 'instrument',
+  },
   fields: [
     {
       name: 'instrument',

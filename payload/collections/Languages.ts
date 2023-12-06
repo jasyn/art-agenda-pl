@@ -6,6 +6,9 @@ const Languages: CollectionConfig = {
     singular: 'Język',
     plural: 'Języki',
   },
+  admin: {
+    useAsTitle: 'jezyk',
+  },
   fields: [
     {
       name: 'jezyk',

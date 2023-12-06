@@ -1,14 +1,27 @@
 import { CollectionConfig, Validate } from 'payload/types';
-import { validateNrDowodu, validateNrKonta, validatePesel, validateUrl } from '../components/forms/validation';
+import CityCustomTextField from '../components/CityCustomTextField/CityCustomTextField';
+import {
+  validateNrDowodu,
+  validateNrKonta,
+  validatePesel,
+  validateUrl,
+} from '../components/forms/validation';
+import moment from 'moment';
+import AgeCustomTextField from '../components/AgeCustomTextField/AgeCustomTextField';
+import LanguagesCustomTextField from '../components/LanguagesCustomTextField/LanguagesCustomTextField';
 
+// TODO: add i18n
+// TODO: PDF actor and many acotrs if possible
 const Actors: CollectionConfig = {
   slug: 'aktorzy',
   labels: {
     singular: 'Aktor',
     plural: 'Aktorzy',
   },
-  admin:{
-    useAsTitle: 'Aktor'
+  admin: {
+    useAsTitle: 'nazwisko',
+    // TODO: zapytać o szukać vs filtrować (kategoria, miasto mieszkania, język) 
+    listSearchableFields: ['imie', 'nazwisko', 'kategoria', 'miastoZamieszkania' ],
   },
   fields: [
     {
@@ -19,17 +32,17 @@ const Actors: CollectionConfig = {
       options: [
         {
           label: 'Aktorzy',
-          value: 'aktorzy'
+          value: 'aktorzy',
         },
         {
           label: 'Aktorki',
-          value: 'aktorki'
+          value: 'aktorki',
         },
         {
           label: 'Młodzi',
-          value: 'mlodzi'
+          value: 'mlodzi',
         },
-      ]
+      ],
     },
     {
       name: 'imie',
@@ -48,20 +61,20 @@ const Actors: CollectionConfig = {
       label: 'Pesel',
       type: 'number',
       required: true,
-      validate: validatePesel
-    },        
+      validate: validatePesel,
+    },
     {
       name: 'nrDowodu',
       label: 'Numer Dowodu',
       type: 'text',
       required: true,
-      validate: validateNrDowodu
+      validate: validateNrDowodu,
     },
     {
       name: 'daneBankowe',
       label: 'Dane Bankowe',
       type: 'group',
-      fields:[
+      fields: [
         {
           name: 'bank',
           label: 'Bank',
@@ -71,11 +84,11 @@ const Actors: CollectionConfig = {
         {
           name: 'numerKonta',
           label: 'Numer konta',
-          type: 'number',
+          type: 'text',
           required: true,
-          validate: validateNrKonta
-        }
-      ]
+          validate: validateNrKonta,
+        },
+      ],
     },
     {
       name: 'imionaRodzicow',
@@ -95,8 +108,18 @@ const Actors: CollectionConfig = {
           admin: {
             date: {
               displayFormat: 'dd.MM.yyyy',
+            },
+          },
+        },
+        {
+          name: 'wiek',
+          type: 'text',
+          admin: {
+            readOnly: true,
+            components: {
+              Field: AgeCustomTextField
             }
-          }
+          },
         },
         {
           name: 'miejsceUrodzenia',
@@ -104,7 +127,7 @@ const Actors: CollectionConfig = {
           type: 'text',
           required: true,
         },
-      ]
+      ],
     },
     {
       name: 'adres',
@@ -120,8 +143,8 @@ const Actors: CollectionConfig = {
               type: 'text',
               required: true,
               admin: {
-                width: '60%'
-              }
+                width: '60%',
+              },
             },
             {
               name: 'numer',
@@ -129,18 +152,18 @@ const Actors: CollectionConfig = {
               type: 'text',
               required: true,
               admin: {
-                width: '20%'
-              }
+                width: '20%',
+              },
             },
             {
               name: 'nrMieszkania',
               label: 'Numer Mieszkania',
               type: 'text',
               admin: {
-                width: '20%'
-              }
+                width: '20%',
+              },
             },
-          ]
+          ],
         },
         {
           type: 'row',
@@ -151,8 +174,8 @@ const Actors: CollectionConfig = {
               type: 'text',
               required: true,
               admin: {
-                width: '50%'
-              }
+                width: '50%',
+              },
             },
             {
               name: 'miasto',
@@ -160,12 +183,28 @@ const Actors: CollectionConfig = {
               type: 'text',
               required: true,
               admin: {
-                width: '50%'
-              }
+                width: '50%',
+              },
             },
-          ]
+          ],
+        },
+        {
+          name: 'pokazMiasto',
+          label: 'Pokaż Miasto',
+          type: 'checkbox',
+          required: true,
+        },
+      ],
+    },
+    {
+      name: 'miastoZamieszkania',
+      type: 'ui',
+      label: 'Miasto Zamieszkania',
+      admin: {
+        components: {
+          Field: CityCustomTextField
         }
-      ]
+      }
     },
     {
       name: 'urzadSkrabowy',
@@ -174,13 +213,13 @@ const Actors: CollectionConfig = {
       required: true,
     },
     {
-      name: 'szkola',
-      label: 'Szkoła',
+      name: 'wyksztalcenie',
+      label: 'Wykształcenie',
       type: 'group',
       fields: [
         {
-          name: 'szkola',
-          label: 'Szkoła',
+          name: 'wyksztalcenie',
+          label: 'Wykształcenie',
           type: 'checkbox',
         },
         {
@@ -189,19 +228,12 @@ const Actors: CollectionConfig = {
           type: 'text',
           admin: {
             condition: (_, siblingData) => siblingData.szkola
-          }
+          },
         },
         {
           name: 'rok',
           label: 'Rok',
-          type: 'date',
-          admin: {
-            date: {
-              pickerAppearance: 'monthOnly',
-              displayFormat: 'yyyy'
-            },
-            condition: (_, siblingData) => siblingData.szkola
-          }
+          type: 'text',
         },
         {
           name: 'rokUkonczenia',
@@ -210,12 +242,12 @@ const Actors: CollectionConfig = {
           admin: {
             date: {
               pickerAppearance: 'monthOnly',
-              displayFormat: 'yyyy'
+              displayFormat: 'yyyy',
             },
             condition: (_, siblingData) => siblingData.szkola
-          }
-        }
-      ]
+          },
+        },
+      ],
     },
     {
       name: 'etat',
@@ -233,9 +265,9 @@ const Actors: CollectionConfig = {
           type: 'text',
           admin: {
             condition: (_, siblingData) => siblingData.etat
-          }
+          },
         },
-      ]
+      ],
     },
     {
       name: 'kolorWlosow',
@@ -256,6 +288,21 @@ const Actors: CollectionConfig = {
       name: 'wzrost',
       label: 'Wzrost',
       type: 'number',
+    },
+    {
+      name: 'potencjalneMiastaZamieszkana',
+      type: 'array',
+      fields: [
+        {
+          name: 'miasto',
+          type: 'text',
+        }
+      ]
+    },
+    {
+      name: 'pokazPotencjalneMiasta',
+      label: 'Pokaż Potencjalne Miasto',
+      type: 'checkbox',
     },
     {
       name: 'kolnierzyk',
@@ -294,266 +341,311 @@ const Actors: CollectionConfig = {
     },
     {
       name: 'rozmiarDzinsow',
-      label: 'Rozmiar dżinsów',
+      label: 'Rozmiar Dsżinsów',
       type: 'number',
     },
     {
-      name: 'prawoJazdy',
-      label: 'Prawo Jazdy',
-      type: 'checkbox',
-    },
-    {
-      name: 'jezyki',
-      label: 'Języki',
+      name: 'umiejetnosci',
+      label: 'Umiejętności',
       type: 'group',
       fields: [
         {
-          name: 'jezykiObcy',
-          label: 'Języki Obcy',
-          type: 'checkbox',
+          name: 'prawoJazdy',
+          type: 'group',
+          fields: [
+            {
+              name: 'pokazPrawoJazdy',
+              label: 'Pokaż Prawo Jazdy',
+              type: 'checkbox',
+            },
+            {
+              name: 'typ',
+              label: 'Typ',
+              type: 'select',
+              options: [
+                {
+                  value: 'AM',
+                  label: 'AM',
+                },
+                {
+                  value: 'A1',
+                  label: 'A1',
+                },
+                {
+                  value: 'A2',
+                  label: 'A2',
+                },
+                {
+                  value: 'A',
+                  label: 'A',
+                },
+                {
+                  value: 'B1',
+                  label: 'B1',
+                },
+                {
+                  value: 'B',
+                  label: 'B',
+                },
+                {
+                  value: 'B+E',
+                  label: 'B+E',
+                },
+                {
+                  value: 'C',
+                  label: 'C',
+                },
+                {
+                  value: 'C1',
+                  label: 'C1',
+                },
+                {
+                  value: 'C1+E',
+                  label: 'C1+E',
+                },
+                {
+                  value: 'C+E',
+                  label: 'C+E',
+                },
+                {
+                  value: 'D',
+                  label: 'D',
+                },
+                {
+                  value: 'D1',
+                  label: 'D1',
+                },
+                {
+                  value: 'D1+E',
+                  label: 'D1+E',
+                },
+                {
+                  value: 'D+E',
+                  label: 'D+E',
+                },
+                {
+                  value: 'T',
+                  label: 'T',
+                },
+              ],
+              admin: {
+                condition: (_, siblingData) => siblingData.pokazPrawoJazdy
+              },
+            },
+          ],
         },
         {
           name: 'jezyki',
-          label: 'Języki',
-          type: 'array',
-          admin: {
-            condition: (_, siblingData) => siblingData.jezykiObcy
-          },
+          type: 'group',
           fields: [
             {
-              type: 'row',
+              name: 'jezykiObcy',
+              label: 'Języki Obcy',
+              type: 'checkbox',
+            },
+            {
+              name: 'jezyki',
+              label: 'Języki',
+              type: 'array',
+              admin: {
+                condition: (_, siblingData) => siblingData.jezykiObcy
+              },
               fields: [
                 {
-                  name: 'language',
-                  label: 'Język',
-                  type: 'relationship',
-                  relationTo: 'jezyki',
-                  admin: {
-                    width: '80%',
-                  }
-                },    
-                {
-                  name: 'poziom',
-                  label: 'Poziom',
-                  type: 'select',
-                  options: [
+                  type: 'row',
+                  fields: [
                     {
-                      label: 'A1',
-                      value: 'A1'
+                      name: 'language',
+                      label: 'Język',
+                      type: 'relationship',
+                      relationTo: 'jezyki',
+                      admin: {
+                        width: '80%',
+                      },
                     },
                     {
-                      label: 'A2',
-                      value: 'A2'
-                    },
-                    {
-                      label: 'B1',
-                      value: 'B1'
-                    },
-                    {
-                      label: 'B2',
-                      value: 'B2'
-                    },
-                    {
-                      label: 'C1',
-                      value: 'C1'
-                    },
-                    {
-                      label: 'C2',
-                      value: 'C2'
+                      name: 'poziom',
+                      label: 'Poziom',
+                      type: 'select',
+                      options: [
+                        {
+                          label: 'A1',
+                          value: 'A1',
+                        },
+                        {
+                          label: 'A2',
+                          value: 'A2',
+                        },
+                        {
+                          label: 'B1',
+                          value: 'B1',
+                        },
+                        {
+                          label: 'B2',
+                          value: 'B2',
+                        },
+                        {
+                          label: 'C1',
+                          value: 'C1',
+                        },
+                        {
+                          label: 'C2',
+                          value: 'C2',
+                        },
+                      ],
+                      admin: {
+                        width: '20%',
+                      },
                     },
                   ],
-                  admin: {
-                    width: '20%',
-                  }
-                }
-              ]
+                },
+              ],
             },
-          ]
-        }
-
-      ]
-    },
-    {
-      name: 'spiewy',
-      label: 'Śpiewy',
-      type: 'group',
-      fields: [
-        {
-          name: 'spiew',
-          label: 'Śpiew',
-          type: 'checkbox',
+          ],
         },
         {
           name: 'spiewy',
-          label: 'Śpiewy',
-          type: 'array',
-          admin: {
-            condition: (_, siblingData) => siblingData.spiew
-          },
+          type: 'group',
           fields: [
             {
-              type: 'row',
+              name: 'spiew',
+              label: 'Śpiew',
+              type: 'checkbox',
+            },
+            {
+              name: 'spiewy',
+              label: 'Śpiewy',
+              type: 'array',
+              admin: {
+                condition: (_, siblingData) => siblingData.spiew
+              },
               fields: [
                 {
-                  name: 'spiew',
-                  label: 'Śpiew',
-                  type: 'relationship',
-                  relationTo: 'spiewy',
+                  type: 'row',
+                  fields: [
+                    {
+                      name: 'spiew',
+                      label: 'Śpiew',
+                      type: 'relationship',
+                      relationTo: 'spiewy',
+                    },
+                  ],
                 },
-              ]
+              ],
             },
-          ]
-        }
-      ]
-    },
-    {
-      name: 'tancy',
-      label: 'Tańcy',
-      type: 'group',
-      fields: [
-        {
-          name: 'taniec',
-          label: 'Taniec',
-          type: 'checkbox',
+          ],
         },
         {
           name: 'tancy',
-          label: 'Tańcy',
-          type: 'array',
-          admin: {
-            condition: (_, siblingData) => siblingData.taniec
-          },
+          type: 'group',
           fields: [
             {
-              type: 'row',
+              name: 'taniec',
+              label: 'Taniec',
+              type: 'checkbox',
+            },
+            {
+              name: 'tancy',
+              label: 'Tańcy',
+              type: 'array',
+              admin: {
+                condition: (_, siblingData) => siblingData.taniec
+              },
               fields: [
                 {
-                  name: 'taniec',
-                  label: 'Taniec',
-                  type: 'relationship',
-                  relationTo: 'tancy',
+                  type: 'row',
+                  fields: [
+                    {
+                      name: 'taniec',
+                      label: 'Taniec',
+                      type: 'relationship',
+                      relationTo: 'tancy',
+                    },
+                  ],
                 },
-              ]
+              ],
             },
-          ]
-        }
-      ]
-    },
-    {
-      name: 'instrumenty',
-      label: 'Instrumenty',
-      type: 'group',
-      fields: [
-        {
-          name: 'instrument',
-          label: 'Instrument',
-          type: 'checkbox',
+          ],
         },
         {
           name: 'instrumenty',
           label: 'Instrumenty',
-          type: 'array',
-          admin: {
-            condition: (_, siblingData) => siblingData.instrument
-          },
+          type: 'group',
           fields: [
             {
-              type: 'row',
+              name: 'instrument',
+              label: 'Instrument',
+              type: 'checkbox',
+            },
+            {
+              name: 'instrumenty',
+              label: 'Instrumenty',
+              type: 'array',
+              admin: {
+                condition: (_, siblingData) => siblingData.instrument
+              },
               fields: [
                 {
-                  name: 'instrument',
-                  label: 'Instrument',
-                  type: 'relationship',
-                  relationTo: 'instrumenty',
+                  type: 'row',
+                  fields: [
+                    {
+                      name: 'instrument',
+                      label: 'Instrument',
+                      type: 'relationship',
+                      relationTo: 'instrumenty',
+                    },
+                  ],
                 },
-              ]
+              ],
             },
-          ]
-        }
-      ]
-    },
-    {
-      name: 'inneUmietnosci',
-      label: 'Inne Umiętności',
-      type: 'group',
-      fields: [
-        {
-          name: 'inneUmietnosci',
-          label: 'Inne Umiętności',
-          type: 'checkbox',
+          ],
         },
         {
-          name: 'inneUmietnosci',
-          label: 'Inne Umiętności',
-          type: 'array',
-          admin: {
-            condition: (_, siblingData) => siblingData.inneUmietnosci
-          },
+          name: 'pozostaleUmiejetnosci',
+          label: 'Pozostałe Umiejętności',
+          type: 'group',
           fields: [
             {
-              name: 'umiejetnosc',
-              label: 'Umiejętność',
-              type: 'text'
+              name: 'pokazInneUmiejetnosci',
+              label: 'Pozostałe Umiejętności',
+              type: 'checkbox',
             },
-          ]
-        }
-      ]
-    },
-    {
-      name: 'nagrody',
-      label: 'Nagrody',
-      type: 'group',
-      fields: [
-        {
-          name: 'nagrody',
-          label: 'Nagrody',
-          type: 'checkbox',
-        },
-        {
-          name: 'nagrody',
-          label: 'Nagrody',
-          type: 'array',
-          admin: {
-            condition: (_, siblingData) => siblingData.nagrody
-          },
-          fields: [
             {
-              type: 'row',
+              name: 'umiejetnosci',
+              label: 'Pozostałe Umiejętności',
+              type: 'array',
+              admin: {
+                condition: (_, siblingData) => siblingData.pokazInneUmiejetnosci
+              },
               fields: [
                 {
-                  name: 'nagroda',
-                  label: 'Nagroda',
+                  name: 'umiejetnosc',
+                  label: 'Umiejętność',
                   type: 'text',
-                  admin: {
-                    width: '80%',
-                  }
                 },
-                {
-                  name: 'rokNagrody',
-                  label: 'Rok',
-                  type: 'date',
-                  admin: {
-                    width: '20%',
-                    date: {
-                      pickerAppearance: 'monthOnly',
-                      displayFormat: 'yyyy'
-                    }
-                  }
-                }
-              ]
-            }
-          ]
-        }
-      ]
+              ],
+            },
+          ],
+        },
+      ],
     },
+    // {
+    //   name: 'jezyki',
+    //   type: 'ui',
+    //   admin: {
+    //     components: {
+    //       Field: LanguagesCustomTextField
+    //     },
+    //   }
+    // },
     {
       name: 'filmografia',
       label: 'Filmografia',
       type: 'group',
       fields: [
         {
-          name: 'filmografia',
-          label: 'Filmografia',
+          name: 'pokazFilmografia',
+          label: 'Pokaż Filmografia',
           type: 'checkbox',
         },
         {
@@ -561,7 +653,7 @@ const Actors: CollectionConfig = {
           label: 'Filmografia',
           type: 'array',
           admin: {
-            condition: (_, siblingData) => siblingData.filmografia
+            condition: (_, siblingData) => siblingData.pokazFilmografia
           },
           fields: [
             {
@@ -573,7 +665,7 @@ const Actors: CollectionConfig = {
                   type: 'text',
                   admin: {
                     width: '80%',
-                  }
+                  },
                 },
                 {
                   name: 'rok',
@@ -583,10 +675,10 @@ const Actors: CollectionConfig = {
                     width: '20%',
                     date: {
                       pickerAppearance: 'monthOnly',
-                      displayFormat: 'yyyy'
-                    }
-                  }
-                }
+                      displayFormat: 'yyyy',
+                    },
+                  },
+                },
               ],
             },
             {
@@ -597,39 +689,111 @@ const Actors: CollectionConfig = {
                 {
                   name: 'rola',
                   label: 'Rola',
-                  type: 'text'
-                }
-              ]
-            }
-          ]
-        }
-      ]
+                  type: 'text',
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+    {
+      name: 'nagrody',
+      label: 'Nagrody',
+      type: 'group',
+      fields: [
+        {
+          name: 'pokazNagrody',
+          label: 'Pokaż Nagrody',
+          type: 'checkbox',
+        },
+        {
+          name: 'nagrody',
+          label: 'Nagrody',
+          type: 'array',
+          admin: {
+            condition: (_, siblingData) => siblingData.pokazNagrody
+          },
+          fields: [
+            {
+              type: 'row',
+              fields: [
+                {
+                  name: 'nagroda',
+                  label: 'Nagroda',
+                  type: 'text',
+                  admin: {
+                    width: '80%',
+                  },
+                },
+                {
+                  name: 'rokNagrody',
+                  label: 'Rok',
+                  type: 'date',
+                  admin: {
+                    width: '20%',
+                    date: {
+                      pickerAppearance: 'monthOnly',
+                      displayFormat: 'yyyy',
+                    },
+                  },
+                },
+              ],
+            },
+          ],
+        },
+      ],
     },
     {
       name: 'filmpolski',
       label: 'Filmpolski',
       type: 'text',
-      validate: validateUrl
+      validate: validateUrl,
     },
     {
       name: 'youtube',
       label: 'Youtube',
       type: 'text',
-      validate: validateUrl
+      required: false,
+      validate: validateUrl,
+    },
+    {
+      name: 'facebook',
+      label: 'Facebook',
+      type: 'text',
+      required: false,
+      validate: validateUrl,
     },
     {
       name: 'instagram',
       label: 'Instagram',
       type: 'text',
-      validate: validateUrl
+      required: false,
+      validate: validateUrl,
     },
     {
       name: 'www',
       label: 'WWWW',
       type: 'text',
-      validate: validateUrl
+      required: false,
+      validate: validateUrl,
     },
-  ]
+    {
+      name: 'wizytowki',
+      type: 'array',
+      fields: [
+        {
+          name: 'nazwa',
+          type: 'text',
+        },
+        {
+          name: 'url',
+          type: 'text',
+          validate: validateUrl,
+        },
+      ],
+    },
+  ],
 };
 
 export default Actors;

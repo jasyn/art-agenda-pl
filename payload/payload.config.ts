@@ -5,6 +5,7 @@ import { Pages } from './collections/Pages';
 import { MainMenu } from './globals/MainMenu';
 import { cloudStorage } from '@payloadcms/plugin-cloud-storage';
 import { s3Adapter } from '@payloadcms/plugin-cloud-storage/s3';
+import { mongooseAdapter } from '@payloadcms/db-mongodb';
 import { Media } from './collections/Media';
 import seo from '@payloadcms/plugin-seo';
 import Actors from './collections/Actors';
@@ -46,6 +47,9 @@ export default buildConfig({
       ]
     }
   ],
+  db: mongooseAdapter({
+    url: process.env.MONGODB_URI as string
+  }),
   localization: {
       locales: [
         'pl',

@@ -6,6 +6,9 @@ const SingingSkills: CollectionConfig = {
     singular: 'Śpiew',
     plural: 'Śpiewy',
   },
+  admin: {
+    useAsTitle: 'spiew',
+  },
   fields: [
     {
       name: 'spiew',

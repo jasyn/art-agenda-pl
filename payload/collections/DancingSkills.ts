@@ -6,6 +6,9 @@ const DancingSkills: CollectionConfig = {
     singular: 'Taniec',
     plural: 'Tańcy',
   },
+  admin: {
+    useAsTitle: 'taniec',
+  },
   fields: [
     {
       name: 'taniec',

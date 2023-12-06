@@ -15,5 +15,13 @@ export const Media: CollectionConfig = {
       type: 'text',
       required: true,
     },
+    {
+      name: 'nazwiskoAktora',
+      type: 'text',
+    },
+    {
+      name: 'nazwiskoFotografa',
+      type: 'text',
+    }
   ]
 }
